@@ -4,8 +4,9 @@ import Image from 'next/image'
 import Link from 'next/link'
 import Stripe from 'stripe'
 import { stripe } from '../lib/stripe'
-import { ImageContainer } from '../styles/pages/product'
-import { SuccessContainer } from '../styles/pages/success'
+import { ImageContainer, SuccessContainer } from '../styles/pages/success'
+
+import logo from '../assets/logo.svg'
 
 interface SuccessProps {
   costumerName: string
@@ -23,6 +24,9 @@ export default function Success({ costumerName, product }: SuccessProps) {
         <meta name="robots" content="noindex" />
       </Head>
       <SuccessContainer>
+        <Link href="/">
+          <Image src={logo} alt="" />
+        </Link>
         <ImageContainer>
           <div>
             <Image src={product.imageUrl} width={120} height={110} alt="" />

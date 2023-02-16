@@ -3,8 +3,13 @@ import * as Dialog from '@radix-ui/react-dialog'
 import Image from 'next/image'
 import { X } from 'phosphor-react'
 import img1 from '../../assets/Shirt/1.png'
+import { useShoppingCart } from 'use-shopping-cart'
 
 export default function ViewShoppingCart() {
+  const { cartCount } = useShoppingCart()
+
+  console.log(cartCount)
+
   return (
     <Dialog.Portal>
       <Content>
