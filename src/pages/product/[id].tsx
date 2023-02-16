@@ -1,3 +1,4 @@
+import Header from '@/src/components/header'
 import { stripe } from '@/src/lib/stripe'
 import {
   ImageContainer,
@@ -46,6 +47,7 @@ export default function Product({ product }: Productprops) {
       <Head>
         <title>{product.name}</title>
       </Head>
+      <Header />
       <ProductContainer>
         <ImageContainer>
           <Image src={product.imageUrl} width={520} height={480} alt="" />

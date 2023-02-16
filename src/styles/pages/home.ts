@@ -28,7 +28,7 @@ export const Product = styled('div', {
     bottom: '0.25rem',
     left: '0.25rem',
     right: '0.25rem',
-    padding: '2rem',
+    padding: '1.5rem',
 
     borderRadius: 6,
 
@@ -42,14 +42,28 @@ export const Product = styled('div', {
 
     transform: 'translateY(110%)',
 
-    strong: {
-      fontSize: '$lg',
-      color: '$gray100',
+    div: {
+      display: 'flex',
+      flexDirection: 'column',
+      gap: '0.5rem',
+      strong: {
+        fontSize: '$lg',
+        color: '$gray100',
+      },
+      span: {
+        fontSize: '$xl',
+        fontWeight: 'bold',
+        color: '$green300',
+      },
     },
-    span: {
-      fontSize: '$xl',
-      fontWeight: 'bold',
-      color: '$green300',
+
+    button: {
+      borderRadius: 6,
+      padding: '0.75rem',
+      background: '$green500',
+      border: 'none',
+      color: '$white',
+      cursor: 'pointer',
     },
   },
 

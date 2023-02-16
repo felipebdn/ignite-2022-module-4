@@ -9,6 +9,8 @@ import { stripe } from '../lib/stripe'
 import Stripe from 'stripe'
 import Link from 'next/link'
 import Head from 'next/head'
+import { Handbag } from 'phosphor-react'
+import Header from '../components/header'
 
 interface HomeProps {
   products: {
@@ -32,6 +34,7 @@ export default function Home({ products }: HomeProps) {
       <Head>
         <title>Home | Ignite Shop</title>
       </Head>
+      <Header />
       <HomeContainer ref={sliderRef} className="keen-slider">
         {products.map((product) => {
           return (
@@ -43,8 +46,13 @@ export default function Home({ products }: HomeProps) {
               <Product className="keen-slider__slide">
                 <Image src={product.imageUrl} alt="" width={520} height={480} />
                 <footer>
-                  <strong>{product.name}</strong>
-                  <span>{product.price}</span>
+                  <div>
+                    <strong>{product.name}</strong>
+                    <span>{product.price}</span>
+                  </div>
+                  <button>
+                    <Handbag size={32} weight="bold" />
+                  </button>
                 </footer>
               </Product>
             </Link>

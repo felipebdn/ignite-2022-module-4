@@ -24,10 +24,11 @@ export const {
       'gray-icon': '#8d8d99',
     },
     fontSizes: {
-      md: '1.125rem',
-      lg: '1.25rem',
-      xl: '1.5rem',
-      '2xl': '2rem',
+      sm: '0.875rem', // 14px
+      md: '1.125rem', // 18px
+      lg: '1.25rem', // 20px
+      xl: '1.5rem', // 24px
+      '2xl': '2rem', // 32px
     },
   },
 })

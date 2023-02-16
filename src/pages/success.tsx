@@ -23,14 +23,21 @@ export default function Success({ costumerName, product }: SuccessProps) {
         <meta name="robots" content="noindex" />
       </Head>
       <SuccessContainer>
-        <h1>Compra efetuada</h1>
         <ImageContainer>
-          <Image src={product.imageUrl} width={120} height={110} alt="" />
+          <div>
+            <Image src={product.imageUrl} width={120} height={110} alt="" />
+          </div>
+          <div>
+            <Image src={product.imageUrl} width={120} height={110} alt="" />
+          </div>
+          <div>
+            <Image src={product.imageUrl} width={120} height={110} alt="" />
+          </div>
         </ImageContainer>
+        <h1>Compra efetuada</h1>
         <p>
           Uhuul <strong>{costumerName}</strong>, sua{' '}
-          <strong>{product.name}</strong>
-          já está a caminho da sua casa.{' '}
+          <strong>{product.name}</strong> já está a caminho da sua casa.{' '}
         </p>
         <Link href="/">Voltar ao catalogo</Link>
       </SuccessContainer>
