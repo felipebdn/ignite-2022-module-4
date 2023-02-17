@@ -1,14 +1,19 @@
-import { Close, Content } from '@/src/styles/components/shoppingCart'
+import { FormaterValue } from '@/src/lib/formaterValue'
+import { Close, Content, Detail } from '@/src/styles/components/shoppingCart'
 import * as Dialog from '@radix-ui/react-dialog'
 import Image from 'next/image'
-import { X } from 'phosphor-react'
-import img1 from '../../assets/Shirt/1.png'
+import { Minus, Plus, X } from 'phosphor-react'
 import { useShoppingCart } from 'use-shopping-cart'
 
 export default function ViewShoppingCart() {
-  const { cartCount } = useShoppingCart()
-
-  console.log(cartCount)
+  const {
+    cartCount,
+    cartDetails,
+    removeItem,
+    totalPrice,
+    incrementItem,
+    decrementItem,
+  } = useShoppingCart()
 
   return (
     <Dialog.Portal>
@@ -18,45 +23,44 @@ export default function ViewShoppingCart() {
         </Close>
         <main>
           <h2>Sacola de compras</h2>
-          <div>
-            <aside>
-              <Image width={100} height={100} src={img1} alt="" />
-            </aside>
-            <div>
-              <h4>Camiseta Beyond the Limits</h4>
-              <pre>R$ 79,90</pre>
-              <button>Remover</button>
-            </div>
-          </div>
-          <div>
-            <aside>
-              <Image width={100} height={100} src={img1} alt="" />
-            </aside>
-            <div>
-              <h4>Camiseta Beyond the Limits</h4>
-              <pre>R$ 79,90</pre>
-              <button>Remover</button>
-            </div>
-          </div>
-          <div>
-            <aside>
-              <Image width={100} height={100} src={img1} alt="" />
-            </aside>
-            <div>
-              <h4>Camiseta Beyond the Limits</h4>
-              <pre>R$ 79,90</pre>
-              <button>Remover</button>
-            </div>
-          </div>
+          {Object.values(cartDetails ?? {}).map((entry) => (
+            <Detail key={entry.id}>
+              <div>
+                <div>
+                  <Image src={entry.image!} width={100} height={100} alt="" />
+                </div>
+                <main>
+                  <h4>{entry.name}</h4>
+                  <pre>{FormaterValue(entry.value)}</pre>
+                  <button onClick={() => removeItem(entry.id)}>Remover</button>
+                </main>
+              </div>
+              <aside>
+                <Minus
+                  size={24}
+                  weight="bold"
+                  onClick={() => decrementItem(entry.id)}
+                />
+                <pre>{entry.quantity}</pre>
+                <Plus
+                  size={24}
+                  weight="bold"
+                  onClick={() => incrementItem(entry.id)}
+                />
+              </aside>
+            </Detail>
+          ))}
         </main>
         <footer>
           <div>
             <h4>Quantidade</h4>
-            <span>3 itens</span>
+            <span>
+              {cartCount! > 1 ? `${cartCount} itens` : `${cartCount} item`}{' '}
+            </span>
           </div>
           <div>
             <h4>Valor total</h4>
-            <pre>R$ 270,00</pre>
+            <pre>{FormaterValue(totalPrice!)}</pre>
           </div>
           <button>Finalizar compra</button>
         </footer>

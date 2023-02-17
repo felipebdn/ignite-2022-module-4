@@ -27,51 +27,6 @@ export const Content = styled(Dialog.Content, {
     display: 'flex',
     flexDirection: 'column',
     gap: '2rem',
-
-    div: {
-      display: 'flex',
-      flexDirection: 'row',
-      gap: '1.25rem',
-
-      aside: {
-        maxWidth: 100,
-        maxHeigth: 100,
-        background: 'linear-gradient(180deg, #1ea483 0%, #7465d4 100%)',
-        borderRadius: 8,
-      },
-
-      div: {
-        display: 'flex',
-        flexDirection: 'column',
-        gap: 0,
-        margin: 'auto 0',
-
-        h4: {
-          fontSize: '$md',
-          fontWeight: 400,
-          lineHeight: '160%',
-        },
-        pre: {
-          fontSize: '$md',
-          fontWeight: 'bold',
-          lineHeight: '160%',
-        },
-      },
-      button: {
-        fontSize: '$md',
-        fontWeight: 700,
-        lineHeight: '160%',
-        color: '$green500',
-        background: 'none',
-        border: 'none',
-        width: 'fit-content',
-        cursor: 'pointer',
-
-        '&:hover': {
-          color: '$green300',
-        },
-      },
-    },
   },
 
   footer: {
@@ -125,4 +80,70 @@ export const Close = styled(Dialog.Close, {
   border: 'none',
   color: '$gray-icon',
   cursor: 'pointer',
+})
+export const Detail = styled('div', {
+  display: 'flex',
+  flexDirection: 'row',
+  gap: '1.5rem',
+
+  div: {
+    flex: 1,
+    display: 'flex',
+    flexDirection: 'row',
+    gap: '1.25rem',
+
+    div: {
+      maxWidth: 100,
+      maxHeigth: 100,
+      background: 'linear-gradient(180deg, #1ea483 0%, #7465d4 100%)',
+      borderRadius: 8,
+    },
+
+    main: {
+      display: 'flex',
+      flexDirection: 'column',
+      gap: 0,
+      margin: 'auto 0',
+
+      h4: {
+        fontSize: '$md',
+        fontWeight: 400,
+        lineHeight: '160%',
+      },
+      pre: {
+        fontSize: '$md',
+        fontWeight: 'bold',
+        lineHeight: '160%',
+      },
+    },
+    button: {
+      fontSize: '$md',
+      fontWeight: 700,
+      lineHeight: '160%',
+      color: '$green500',
+      background: 'none',
+      border: 'none',
+      width: 'fit-content',
+      cursor: 'pointer',
+
+      '&:hover': {
+        color: '$green300',
+      },
+    },
+  },
+  aside: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'space-evenly',
+
+    pre: {
+      fontSize: '$lg',
+      fontWeight: 'bold',
+    },
+
+    svg: {
+      cursor: 'pointer',
+    },
+  },
 })

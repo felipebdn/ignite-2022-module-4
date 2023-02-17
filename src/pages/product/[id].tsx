@@ -1,4 +1,5 @@
 import Header from '@/src/components/header'
+import { FormaterValue } from '@/src/lib/formaterValue'
 import { stripe } from '@/src/lib/stripe'
 import {
   ImageContainer,
@@ -48,8 +49,6 @@ export default function Product({ product }: Productprops) {
       addItem(productAdd)
       setIsCreatingCheckoutSession(false)
     } catch (err) {
-      console.log(err)
-
       setIsCreatingCheckoutSession(false)
     }
   }
@@ -116,10 +115,7 @@ export const getStaticProps: GetStaticProps<any, { id: string }> = async ({
         id: product.id,
         name: product.name,
         imageUrl: product.images[0],
-        price: new Intl.NumberFormat('pt-BR', {
-          style: 'currency',
-          currency: 'BRL',
-        }).format(price.unit_amount ? price.unit_amount / 100 : 0),
+        price: FormaterValue(price.unit_amount!),
         priceNumber: price.unit_amount,
         description: product.description,
         defaultPriceId: price.id,
