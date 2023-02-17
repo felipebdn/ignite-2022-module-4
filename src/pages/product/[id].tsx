@@ -13,7 +13,6 @@ import Image from 'next/image'
 import { useState } from 'react'
 import Stripe from 'stripe'
 import { useShoppingCart } from 'use-shopping-cart'
-import { v4 as uuidv4 } from 'uuid'
 
 interface Productprops {
   product: {
@@ -35,16 +34,16 @@ export default function Product({ product }: Productprops) {
   const { addItem } = useShoppingCart()
 
   function addItemCart() {
+    setIsCreatingCheckoutSession(true)
     try {
-      setIsCreatingCheckoutSession(true)
       const productAdd = {
         name: product.name,
-        id: product.id,
+        description: product.description,
+        sku: product.id,
         price: product.priceNumber,
-        currency: product.currency,
         image: product.imageUrl,
-        price_id: product.defaultPriceId,
-        sku: uuidv4(),
+        currency: product.currency,
+        // price_id: product.defaultPriceId,
       }
       addItem(productAdd)
       setIsCreatingCheckoutSession(false)
@@ -52,22 +51,6 @@ export default function Product({ product }: Productprops) {
       setIsCreatingCheckoutSession(false)
     }
   }
-
-  // async function handleBuyProduct() {
-  //   setIsCreatingCheckoutSession(true)
-  //   try {
-  //     const res = await axios.post('/api/checkout', {
-  //       priceId: product.defaultPriceId,
-  //     })
-
-  //     const { checkoutUrl } = res.data
-
-  //     window.location.href = checkoutUrl
-  //   } catch (err) {
-  //     // conectar com alguma ferramenta de observabilidade (DataDog / Sentry)
-  //     setIsCreatingCheckoutSession(false)
-  //   }
-  // }
 
   return (
     <>
