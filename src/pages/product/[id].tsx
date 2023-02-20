@@ -1,12 +1,10 @@
 import Header from '@/src/components/header'
-import { FormaterValue } from '@/src/lib/formaterValue'
 import { stripe } from '@/src/lib/stripe'
 import {
   ImageContainer,
   ProductContainer,
   ProductDetails,
 } from '@/src/styles/pages/product'
-// import axios from 'axios'
 import { GetStaticPaths, GetStaticProps } from 'next'
 import Head from 'next/head'
 import Image from 'next/image'
@@ -19,11 +17,10 @@ interface Productprops {
     id: string
     name: string
     imageUrl: string
-    price: string
+    price: number
     description: string
     defaultPriceId: string
     currency: string
-    priceNumber: number
   }
 }
 
@@ -39,11 +36,10 @@ export default function Product({ product }: Productprops) {
       const productAdd = {
         name: product.name,
         description: product.description,
-        sku: product.id,
-        price: product.priceNumber,
+        price: product.price,
+        id: product.defaultPriceId,
         image: product.imageUrl,
         currency: product.currency,
-        // price_id: product.defaultPriceId,
       }
       addItem(productAdd)
       setIsCreatingCheckoutSession(false)
@@ -92,14 +88,15 @@ export const getStaticProps: GetStaticProps<any, { id: string }> = async ({
 
   const price = product.default_price as Stripe.Price
 
+  console.log(price.id)
+
   return {
     props: {
       product: {
         id: product.id,
         name: product.name,
         imageUrl: product.images[0],
-        price: FormaterValue(price.unit_amount!),
-        priceNumber: price.unit_amount,
+        price: price.unit_amount,
         description: product.description,
         defaultPriceId: price.id,
         currency: price.currency,

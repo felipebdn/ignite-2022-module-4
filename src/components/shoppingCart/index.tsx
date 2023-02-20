@@ -3,12 +3,12 @@ import { Close, Content, Detail } from '@/src/styles/components/shoppingCart'
 import * as Dialog from '@radix-ui/react-dialog'
 import Image from 'next/image'
 import { Minus, Plus, X } from 'phosphor-react'
-// import { useState } from 'react'
+import { useState } from 'react'
 import { useShoppingCart } from 'use-shopping-cart'
 
 export default function ViewShoppingCart() {
-  // const [creatingCheckoutSession, setIsCreatingCheckoutSession] =
-  //   useState(false)
+  const [creatingCheckoutSession, setIsCreatingCheckoutSession] =
+    useState(false)
 
   const {
     cartCount,
@@ -17,8 +17,19 @@ export default function ViewShoppingCart() {
     totalPrice,
     incrementItem,
     decrementItem,
-    // redirectToCheckout,
+    redirectToCheckout,
   } = useShoppingCart()
+
+  console.log(cartDetails)
+
+  async function HandleBuyProducts() {
+    try {
+      setIsCreatingCheckoutSession(true)
+      redirectToCheckout()
+    } catch (err) {
+      setIsCreatingCheckoutSession(false)
+    }
+  }
 
   return (
     <Dialog.Portal>
@@ -68,8 +79,8 @@ export default function ViewShoppingCart() {
             <pre>{FormaterValue(totalPrice!)}</pre>
           </div>
           <button
-          // disabled={creatingCheckoutSession}
-          // onClick={handleBuyProducts}
+            disabled={creatingCheckoutSession}
+            onClick={HandleBuyProducts}
           >
             Finalizar compra
           </button>
