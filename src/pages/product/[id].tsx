@@ -1,4 +1,7 @@
 import Header from '@/src/components/header'
+import { IProduct } from '@/src/context/CartContenxt'
+import { useCart } from '@/src/hooks/useCart'
+import { FormaterValue } from '@/src/lib/formaterValue'
 import { stripe } from '@/src/lib/stripe'
 import {
   ImageContainer,
@@ -8,45 +11,16 @@ import {
 import { GetStaticPaths, GetStaticProps } from 'next'
 import Head from 'next/head'
 import Image from 'next/image'
-import { useState } from 'react'
 import Stripe from 'stripe'
-import { useShoppingCart } from 'use-shopping-cart'
 
 interface Productprops {
-  product: {
-    id: string
-    name: string
-    imageUrl: string
-    price: number
-    description: string
-    defaultPriceId: string
-    currency: string
-  }
+  product: IProduct
 }
 
 export default function Product({ product }: Productprops) {
-  const [isCreatingCheckoutSession, setIsCreatingCheckoutSession] =
-    useState(false)
+  const { checkIfItemAlreadyExists, AddProductInCart } = useCart()
 
-  const { addItem } = useShoppingCart()
-
-  function addItemCart() {
-    setIsCreatingCheckoutSession(true)
-    try {
-      const productAdd = {
-        name: product.name,
-        description: product.description,
-        price: product.price,
-        id: product.defaultPriceId,
-        image: product.imageUrl,
-        currency: product.currency,
-      }
-      addItem(productAdd)
-      setIsCreatingCheckoutSession(false)
-    } catch (err) {
-      setIsCreatingCheckoutSession(false)
-    }
-  }
+  const isItemInCard = checkIfItemAlreadyExists(product.id)
 
   return (
     <>
@@ -62,8 +36,11 @@ export default function Product({ product }: Productprops) {
           <h1>{product.name}</h1>
           <span>{product.price}</span>
           <p>{product.description}</p>
-          <button disabled={isCreatingCheckoutSession} onClick={addItemCart}>
-            Comprar agora
+          <button
+            disabled={isItemInCard}
+            onClick={() => AddProductInCart(product)}
+          >
+            {isItemInCard ? 'produto ja no carrinho' : 'comprar agora'}
           </button>
         </ProductDetails>
       </ProductContainer>
@@ -88,18 +65,16 @@ export const getStaticProps: GetStaticProps<any, { id: string }> = async ({
 
   const price = product.default_price as Stripe.Price
 
-  console.log(price.id)
-
   return {
     props: {
       product: {
         id: product.id,
         name: product.name,
         imageUrl: product.images[0],
-        price: price.unit_amount,
+        price: FormaterValue(price.unit_amount!),
+        numberPrice: price.unit_amount,
         description: product.description,
         defaultPriceId: price.id,
-        currency: price.currency,
       },
     },
     revalidate: 60 * 60 * 1, // uma hora

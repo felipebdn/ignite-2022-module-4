@@ -6,10 +6,10 @@ import { Handbag } from 'phosphor-react'
 import logoImg from '../../assets/logo.svg'
 import * as Dialog from '@radix-ui/react-dialog'
 import ViewShoppingCart from '../shoppingCart'
-import { useShoppingCart } from 'use-shopping-cart'
+import { useCart } from '@/src/hooks/useCart'
 
 export default function Header() {
-  const { cartCount } = useShoppingCart()
+  const { cart } = useCart()
 
   return (
     <HeaderContainer>
@@ -19,9 +19,9 @@ export default function Header() {
 
       <Dialog.Root>
         <Dialog.Trigger asChild>
-          <BagContainer isItem={cartCount! > 0}>
+          <BagContainer isItem={true}>
             <Handbag size={24} weight="bold" />
-            {cartCount! > 0 ? <span>{cartCount}</span> : null}
+            {cart.length > 0 ? <span>{cart.length}</span> : null}
           </BagContainer>
         </Dialog.Trigger>
         <ViewShoppingCart />

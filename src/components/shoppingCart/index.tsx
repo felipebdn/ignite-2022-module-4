@@ -1,31 +1,29 @@
 import { FormaterValue } from '@/src/lib/formaterValue'
 import { Close, Content, Detail } from '@/src/styles/components/shoppingCart'
-import * as Dialog from '@radix-ui/react-dialog'
-import Image from 'next/image'
-import { Minus, Plus, X } from 'phosphor-react'
+// import Image from 'next/image'
+import { X } from 'phosphor-react'
 import { useState } from 'react'
-import { useShoppingCart } from 'use-shopping-cart'
+import * as Dialog from '@radix-ui/react-dialog'
+import { useCart } from '@/src/hooks/useCart'
+import Image from 'next/image'
+import axios from 'axios'
 
 export default function ViewShoppingCart() {
+  const { cart, RemoveItemInCart, cartTotal } = useCart()
+
   const [creatingCheckoutSession, setIsCreatingCheckoutSession] =
     useState(false)
-
-  const {
-    cartCount,
-    cartDetails,
-    removeItem,
-    totalPrice,
-    incrementItem,
-    decrementItem,
-    redirectToCheckout,
-  } = useShoppingCart()
-
-  console.log(cartDetails)
 
   async function HandleBuyProducts() {
     try {
       setIsCreatingCheckoutSession(true)
-      redirectToCheckout()
+      const res = await axios.post('/api/checkout', {
+        products: cart,
+      })
+
+      const { checkoutUrl } = res.data
+
+      window.location.href = checkoutUrl
     } catch (err) {
       setIsCreatingCheckoutSession(false)
     }
@@ -39,44 +37,40 @@ export default function ViewShoppingCart() {
         </Close>
         <main>
           <h2>Sacola de compras</h2>
-          {Object.values(cartDetails ?? {}).map((entry) => (
-            <Detail key={entry.id}>
-              <div>
+          {cart.map((item) => {
+            return (
+              <Detail key={item.id}>
                 <div>
-                  <Image src={entry.image!} width={100} height={100} alt="" />
+                  <div>
+                    <Image
+                      src={item.imageUrl}
+                      width={100}
+                      height={100}
+                      alt=""
+                    />
+                  </div>
+                  <main>
+                    <h4>{item.name}</h4>
+                    <pre>{item.price}</pre>
+                    <button onClick={() => RemoveItemInCart(item.id)}>
+                      Remover
+                    </button>
+                  </main>
                 </div>
-                <main>
-                  <h4>{entry.name}</h4>
-                  <pre>{FormaterValue(entry.value)}</pre>
-                  <button onClick={() => removeItem(entry.id)}>Remover</button>
-                </main>
-              </div>
-              <aside>
-                <Minus
-                  size={24}
-                  weight="bold"
-                  onClick={() => decrementItem(entry.id)}
-                />
-                <pre>{entry.quantity}</pre>
-                <Plus
-                  size={24}
-                  weight="bold"
-                  onClick={() => incrementItem(entry.id)}
-                />
-              </aside>
-            </Detail>
-          ))}
+              </Detail>
+            )
+          })}
         </main>
         <footer>
           <div>
             <h4>Quantidade</h4>
             <span>
-              {cartCount! > 1 ? `${cartCount} itens` : `${cartCount} item`}{' '}
+              {cart.length > 1 ? `${cart.length} itens` : `${cart.length} item`}{' '}
             </span>
           </div>
           <div>
             <h4>Valor total</h4>
-            <pre>{FormaterValue(totalPrice!)}</pre>
+            <pre>{FormaterValue(cartTotal)}</pre>
           </div>
           <button
             disabled={creatingCheckoutSession}
